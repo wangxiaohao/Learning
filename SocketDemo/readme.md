@@ -7,71 +7,86 @@ tags: [socket编程]
 
 
 ---
-#### 什么是Socket
+
+### 什么是Socket
+
 提起socket，我们不得不先看看TCP/IP协议族。
+
 下图显示了TCP/IP协议四层之间的关系：
+
+<!-- more -->
 ![img](http://7xql77.com1.z0.glb.clouddn.com/socket_concept.jpg)
 
 其中，Socket是'应用层与TCP/IP协议族通信的中间软件抽象层，它是一组接口'，在设计模式中，Socket就是一个门面模式，它把复杂的TCP/IP协议族隐藏在了Scoket接口的后面，让Socket去组织数据，以符合指定的协议。
 
-#### TCP与UDP协议
+### TCP与UDP协议
+
 1. TCP协议：面向连接、传输可靠(保证数据正确性,保证数据顺序)、用于传输大量数据(流模式)、速度慢，建立连接需要开销较多(时间，系统资源)。
 
 2. UDP协议：面向非连接、传输不可靠、用于传输少量数据(数据包模式)、速度快。
 
 3. TCP三次握手和四次挥手
 
-相对于SOCKET开发者，TCP创建过程和连接拆除过程是由TCP/IP协议栈自动创建的。因此开发者并不需要控制这个过程。但是对于理解TCP底层运作机制，相当有帮助。
+	* TCP三次握手
 
-因此在这里详细解释一下这两个过程。
+		所谓三次握手(Three-way Handshake)，是指建立一个TCP连接时，需要客户端和服务器总共发送3个包。三次握手的目的是连接服务器指定端口，建立TCP连接,并同步连接双方的序列号和确认号并交换 TCP 窗口大小信息.在socket编程中，客户端执行connect()时。将触发三次握手。 
+	
+		![img](http://7xql77.com1.z0.glb.clouddn.com/tcp3wo.png)
+		
+		首先了解一下几个标志，SYN（synchronous），同步标志；ACK (Acknowledgement），即确认标志；seq(Sequence Number)，序列号的意思；另外还有四次握手的fin(final)，表示结束标志。
+	
+		第一次握手：客户端发送一个TCP的SYN标志位置1的包指明客户打算连接的服务器的端口，以及初始序号X,保存在包头的序列号(Sequence Number)字段里。
+	
+		第二次握手：服务器发回确认包(ACK)应答。即SYN标志位和ACK标志位均为1同时，将确认序号(Acknowledgement Number)设置为客户的序列号加1以，即X+1。
+	
+		第三次握手：客户端再次发送确认包(ACK) SYN标志位为0，ACK标志位为1。并且把服务器发来ACK的序号字段+1，放在确定字段中发送给对方.并且在数据段放写序列号的+1。
+		
+	* TCP四次挥手
+	
+		TCP的连接的拆除需要发送四个包，因此称为四次挥手(four-way handshake)。客户端或服务器均可主动发起挥手动作，在socket
+	
+		编程中，任何一方执行close()操作即可产生挥手操作。
 
-* TCP三次握手
+		![img](http://7xql77.com1.z0.glb.clouddn.com/tcp4hui.png)
 
-	所谓三次握手(Three-way Handshake)，是指建立一个TCP连接时，需要客户端和服务器总共发送3个包。三次握手的目的是连接服务器指定端口，建立TCP连接,并同步连接双方的序列号和确认号并交换 TCP 窗口大小信息.在socket编程中，客户端执行connect()时。将触发三次握手。 
+		为什么连接的时候是三次握手，关闭的时候却是四次挥手？
 	
-	![img](http://7xql77.com1.z0.glb.clouddn.com/tcp3wo.png)
-	首先了解一下几个标志，SYN（synchronous），同步标志；ACK (Acknowledgement），即确认标志；seq(Sequence Number)，序列号的意思；另外还有四次握手的fin(final)，表示结束标志。
-	
-	第一次握手：客户端发送一个TCP的SYN标志位置1的包指明客户打算连接的服务器的端口，以及初始序号X,保存在包头的序列号(Sequence Number)字段里。
-	
-	第二次握手：服务器发回确认包(ACK)应答。即SYN标志位和ACK标志位均为1同时，将确认序号(Acknowledgement Number)设置为客户的序列号加1以，即X+1。
-	
-	第三次握手：客户端再次发送确认包(ACK) SYN标志位为0，ACK标志位为1。并且把服务器发来ACK的序号字段+1，放在确定字段中发送给对方.并且在数据段放写序列号的+1。
-* TCP四次挥手
-	
-	TCP的连接的拆除需要发送四个包，因此称为四次挥手(four-way handshake)。客户端或服务器均可主动发起挥手动作，在socket
-	
-	编程中，任何一方执行close()操作即可产生挥手操作。
-
-	![img](http://7xql77.com1.z0.glb.clouddn.com/tcp4hui.png)
-
-	为什么连接的时候是三次握手，关闭的时候却是四次挥手？
-	
-	因为当Server端收到Client端的SYN连接请求报文后，可以直接发送SYN+ACK报文。其中ACK报文是用来应答的，SYN报文是用来同步的。但是关闭连接时，当Server端收到FIN报文时，很可能并不会立即关闭SOCKET，所以只能先回复一个ACK报文，告诉Client端，"你发的FIN报文我收到了"。只有等到我Server端所有的报文都发送完了，我才能发送FIN报文，因此不能一起发送。故需要四步握手。
+		因为当Server端收到Client端的SYN连接请求报文后，可以直接发送SYN+ACK报文。其中ACK报文是用来应答的，SYN报文是用来同步的。但是关闭连接时，当Server端收到FIN报文时，很可能并不会立即关闭SOCKET，所以只能先回复一个ACK报文，告诉Client端，"你发的FIN报文我收到了"。只有等到我Server端所有的报文都发送完了，我才能发送FIN报文，因此不能一起发送。故需要四步握手。
 
 ### Socket在iOS上的实现
+
 iOS Socket编程层次结构分为三层：
 
-	* OS层:基于 C 的 BSD socket
-	* Core Foundation层：基于C的CFNetwork 和 CFNetServices
-	* Cocoa层：NSStream
+`BSD socket` `CFNetwork` 和 `NSStream`
 
 1. 基于C的BSD socket
+
 	BSD socket API 和 winsock API 接口大体差不多，下面将列出比较常用的 API：
+	
 	* socket() 创建一个新的确定类型的套接字，类型用一个整型数值标识（文件描述符），并为它分配系统资源。
+	
 	* bind() 一般用于服务器端，将一个套接字与一个套接字地址结构相关联，比如，一个指定的本地端口和IP地址。
+	
 	* listen() 用于服务器端，使一个绑定的TCP套接字进入监听状态。
+	
 	* connect() 用于客户端，为一个套接字分配一个自由的本地端口号。 如果是TCP套接字的话，它会试图获得一个新的TCP连接。
+	
 	* accept() 用于服务器端。 它接受一个从远端客户端发出的创建一个新的TCP连接的接入请求，创建一个新的套接字，与该连接相应的套接字地址相关联。
+	
 	* send()和recv(),或者write()和read(),或者recvfrom()和sendto(), 用于往/从远程套接字发送和接受数据。
+	
 	* close() 用于系统释放分配给一个套接字的资源。 如果是TCP，连接会被中断。
 
 	基本TCP客户—服务器程序设计基本框架 :
+	
 	![img](http://7xql77.com1.z0.glb.clouddn.com/tcp_cs.jpg)
 	
 	基本UDP客户—服务器程序设计基本框架流程图 :
+	
 	![img](http://7xql77.com1.z0.glb.clouddn.com/udp_cs.jpg)
-
+	
+	具体代码参考：[BSDSocket](https://github.com/JhonChan/Learning/tree/master/SocketDemo/BSDSocket)
+	
 2. 基于C的CFNetwork
 
 	CFNetwork框架包括的类库如下：
@@ -88,7 +103,6 @@ iOS Socket编程层次结构分为三层：
 		Boolean CFReadStreamOpen(CFReadStreamRef stream);
 		Boolean CFWriteStreamOpen(CFWriteStreamRef stream);
 	
-	
 	但与 socket 不同的是，这两个接口是异步的，当成功 open 之后，如果调用方设置了获取 kCFStreamEventOpenCompleted 事件的标志的话就会其调用回调函数。
 而该回调函数及其参数设置是通过如下接口进行的：
 
@@ -96,6 +110,7 @@ iOS Socket编程层次结构分为三层：
 		Boolean CFWriteStreamSetClient(CFWriteStreamRef stream, CFOptionFlags streamEvents, CFWriteStreamClientCallBack clientCB, CFStreamClientContext *clientContext);
 	
 	该函数用于设置回调函数及相关参数。通过 streamEvents 标志来设置我们对哪些事件感兴趣；clientCB 是一个回调函数，当事件标志对应的事件发生时，该回调函数就会被调用；clientContext 是用于传递参数到回调函数中去。
+	
 	当设置好回调函数之后，我们可以将 socket stream 当做事件源调度到 run-loop 中去，这样 run-loop 就能分发该 socket stream 的网络事件了。
 
 		void CFReadStreamScheduleWithRunLoop(CFReadStreamRef stream, CFRunLoopRef runLoop, CFStringRef runLoopMode);
@@ -125,7 +140,8 @@ iOS Socket编程层次结构分为三层：
 
 	![img](http://7xql77.com1.z0.glb.clouddn.com/cfnetwork_layer.png)
 
-
+	具体代码参考：[CFSocket](https://github.com/JhonChan/Learning/tree/master/SocketDemo/CFSocket)
+	
 3. NSStream
 
 	NSStream 其实只是用 Objective-C 对 CFNetwork 的简单封装，它使用名为 NSStreamDelegate 的协议来实现 CFNetwork 中的回调函数的作用，同样，runloop 也与 NSStream 结合的很好。NSStream 有两个实体类：NSInputStream 和 NSOutputStream，分别对应 CFNetwork 中的 CFReadStream 和 CFWriteStream。
@@ -147,7 +163,6 @@ iOS Socket编程层次结构分为三层：
 	
 	* -(NSError *)streamError;
 
-
 	 NSStream 是通过 NSStreamDelegate 来实现 CFNetwork 中的回调函数，这个可选的协议只有一个接口：
 
 	- (void)stream:(NSStream *)aStream handleEvent:(NSStreamEvent)eventCode;
@@ -155,21 +170,13 @@ iOS Socket编程层次结构分为三层：
 	NSStreamEvent 是一个流事件枚举：
 
 		typedef NS_OPTIONS(NSUInteger, NSStreamEvent) {
-		
 		    NSStreamEventNone = 0,//无
-		
 		    NSStreamEventOpenCompleted = 1UL << 0,//流打开完毕
-		
 		    NSStreamEventHasBytesAvailable = 1UL << 1,//可以读取数据
-		
 		    NSStreamEventHasSpaceAvailable = 1UL << 2,//可以发送数据
-		
 		    NSStreamEventErrorOccurred = 1UL << 3,//发生错误
-		
 		    NSStreamEventEndEncountered = 1UL << 4//数据接收完毕
-		
 		};
-
 
 	NSInputStream 类有如下接口：
 	
@@ -194,7 +201,9 @@ iOS Socket编程层次结构分为三层：
 	
 	![img](http://7xql77.com1.z0.glb.clouddn.com/nsstream_layer.png)
 
+	具体代码参考：[NSStream](https://github.com/JhonChan/Learning/tree/master/SocketDemo/NSStream)
 
 ### 第三方库CocoaAsyncSocket
+
 使用NSStream显然已经很方便了，第三方库cocoaasyncsocket使iOS的socket实现更加简单。
 cocoaasyncsocket是支持tcp和udp的，更多使用方法见[https://github.com/robbiehanson/CocoaAsyncSocket](https://github.com/robbiehanson/CocoaAsyncSocket).
