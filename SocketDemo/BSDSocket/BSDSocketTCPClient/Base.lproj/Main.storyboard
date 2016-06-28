@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gvQ-KE-faX">
+                                <rect key="frame" x="20" y="77" width="482" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="R8T-Jm-FVD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Qjs-dG-yNx">
+                                <rect key="frame" x="20" y="123" width="560" height="443"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kgg-kC-GQ3">
+                                <rect key="frame" x="522" y="77" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="UQV-9n-Fng"/>
+                                </constraints>
+                                <state key="normal" title="发送"/>
+                                <connections>
+                                    <action selector="sendMsg:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VCR-hz-wOe"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入服务器地址" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7H6-md-cJP">
+                                <rect key="frame" x="20" y="20" width="498" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="kgY-c6-on0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rLw-Km-vmp">
+                                <rect key="frame" x="522" y="20" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="s3N-wb-kbM"/>
+                                </constraints>
+                                <state key="normal" title="连接"/>
+                                <connections>
+                                    <action selector="connetTCPServer" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y2U-9z-VAy"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="kgg-kC-GQ3" secondAttribute="trailing" constant="28" id="0RY-zQ-fAF"/>
+                            <constraint firstItem="kgg-kC-GQ3" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="57" id="1GR-Sf-D1E"/>
+                            <constraint firstItem="rLw-Km-vmp" firstAttribute="leading" secondItem="7H6-md-cJP" secondAttribute="trailing" constant="4" id="1yE-oh-cC5"/>
+                            <constraint firstItem="7H6-md-cJP" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="6zh-dg-50H"/>
+                            <constraint firstItem="Qjs-dG-yNx" firstAttribute="top" secondItem="gvQ-KE-faX" secondAttribute="bottom" constant="16" id="DVh-jj-sP5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="rLw-Km-vmp" secondAttribute="trailing" constant="28" id="MjO-6y-wvS"/>
+                            <constraint firstItem="kgg-kC-GQ3" firstAttribute="leading" secondItem="gvQ-KE-faX" secondAttribute="trailing" constant="20" id="OE2-Du-nMu"/>
+                            <constraint firstItem="gvQ-KE-faX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="YGt-YX-iVd"/>
+                            <constraint firstItem="gvQ-KE-faX" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="57" id="cJJ-I0-hSl"/>
+                            <constraint firstItem="Qjs-dG-yNx" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="cgK-6Z-HEl"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Qjs-dG-yNx" secondAttribute="bottom" constant="34" id="d52-7H-qZa"/>
+                            <constraint firstAttribute="trailing" secondItem="Qjs-dG-yNx" secondAttribute="trailing" constant="20" id="igF-t9-n9j"/>
+                            <constraint firstItem="rLw-Km-vmp" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="jyx-s4-jqG"/>
+                            <constraint firstItem="rLw-Km-vmp" firstAttribute="leading" secondItem="7H6-md-cJP" secondAttribute="trailing" constant="4" id="rZu-lY-acj"/>
+                            <constraint firstItem="7H6-md-cJP" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="xXp-et-ybk"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="boardTextView" destination="Qjs-dG-yNx" id="7XD-fp-Eeb"/>
+                        <outlet property="connetButtton" destination="rLw-Km-vmp" id="L7e-NJ-2tL"/>
+                        <outlet property="inputMsgField" destination="gvQ-KE-faX" id="AdK-Gj-MdG"/>
+                        <outlet property="serverIPField" destination="7H6-md-cJP" id="8Hp-aB-HCf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="409" y="299"/>
+        </scene>
+    </scenes>
+</document>
