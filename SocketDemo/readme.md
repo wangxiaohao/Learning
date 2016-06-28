@@ -191,6 +191,7 @@ iOS Socket编程层次结构分为三层：
 	检查流中是否还有可供写入的空间。
 	
 	使用NSStream编程流程图：
+	
 	![img](http://7xql77.com1.z0.glb.clouddn.com/nsstream_layer.png)
 
 
