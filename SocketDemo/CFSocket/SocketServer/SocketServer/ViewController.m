@@ -33,6 +33,7 @@
     SocketServer *server = [[SocketServer alloc] init];
     server.delegate = self;
     _server = server;
+    _chatBoard.layoutManager.allowsNonContiguousLayout = NO;
 }
 
 - (IBAction)startServer:(UIButton *)sender
@@ -54,6 +55,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         NSString *txt = [NSString stringWithFormat:@"%@\n%@", weakSelf.chatBoard.text,strMsg];
         weakSelf.chatBoard.text = txt;
+        [weakSelf.chatBoard scrollRangeToVisible:NSMakeRange(weakSelf.chatBoard.text.length, 1)];
     });
     
 }

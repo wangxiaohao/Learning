@@ -87,7 +87,7 @@ static CFWriteStreamRef outputStream;
     memset(&addr4, 0, sizeof(addr4));//addr4内存置0
     addr4.sin_len = sizeof(addr4);
     addr4.sin_family = AF_INET;
-    addr4.sin_port = htons(8888);
+    addr4.sin_port = htons(1024);
     addr4.sin_addr.s_addr = htonl(INADDR_ANY);
     //Creates an immutable CFData object using data copied from a specified byte buffer.
     CFDataRef address = CFDataCreate(kCFAllocatorDefault, (UInt8 *)&addr4, sizeof(addr4));

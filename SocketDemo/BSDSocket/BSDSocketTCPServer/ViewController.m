@@ -96,8 +96,8 @@
                     //5.接收数据
                     count = recv(peerfd, buf, len, 0);
                     NSString *str = [NSString stringWithCString:buf encoding:NSUTF8StringEncoding];
-                    NSString *log = [NSString stringWithFormat:@"RECEIVED DATA:%@", str];
-                    ECSOCKETLOG(log);
+                    NSString *logg = [NSString stringWithFormat:@"RECEIVED DATA:%@", str];
+                    ECSOCKETLOG(logg);
                 } while (strcmp(buf, "exit") != 0);
             }
             //6.关闭socket
