@@ -206,4 +206,67 @@ iOS Socket编程层次结构分为三层：
 ### 第三方库CocoaAsyncSocket
 
 使用NSStream显然已经很方便了，第三方库cocoaasyncsocket使iOS的socket实现更加简单。
-cocoaasyncsocket是支持tcp和udp的，更多使用方法见[https://github.com/robbiehanson/CocoaAsyncSocket](https://github.com/robbiehanson/CocoaAsyncSocket).
+cocoaasyncsocket是支持tcp和udp的，利用它可以轻松实现建立连接、断开连接、发送socket业务请求、重连这四个基本功能。下面简单描述一下步骤。
+
+1. 获取GCDAsyncSocket对象。在GCDAsyncSocket中提供了四种初始化的方法
+	
+	- (id)init;
+	
+	- (id)initWithSocketQueue:(dispatch_queue_t)sq;
+	
+	- (id)initWithDelegate:(id)aDelegate delegateQueue:(dispatch_queue_t)dq;
+	
+	- (id)initWithDelegate:(id)aDelegate delegateQueue:(dispatch_queue_t)dq socketQueue:(dispatch_queue_t)sq;
+	
+	
+	sq是socket的线程，这个是可选的设置，如果你写null，GCDAsyncSocket内部会帮你创建一个它自己的socket线程，如果你要自己提供一个socket线程的话，千万不要提供一个并发线程，在频繁socket通信过程中，可能会阻塞掉。
+	
+	aDelegate就是socket的代理
+	
+	dq是delegate的线程
+	
+	注意：必须设置socket的代理以及代理的线程，否则socket的回调无法调起。
+
+2. 建立跟服务器的连接。
+
+	- (BOOL)connectToHost:(NSString*)host onPort:(uint16_t)port error:(NSError**)errPtr;
+
+		host是主机地址，port是端口号。如果建连成功之后，会收到socket成功的回调，在成功里面你可以做你需要做的一些事情，比如心跳的处理：
+
+			- (void)socket:(GCDAsyncSocket*)sock didConnectToHost:(NSString*)host port:(UInt16)port
+	
+		如果建连失败了，会收到失败的回调，这里可以做重连的操作：
+
+			- (void)socketDidDisconnect:(GCDAsyncSocket*)sock withError:(NSError*)err
+
+3. 发送数据
+
+	在拼装好socket请求数据(格式、分界符要与后台商定)之后，你需要调用GCDAsyncSocket的写方法，来发送请求，然后在写完成之后你会收到写的回调
+
+		[self.socket writeData:requestData withTimeout:-1 tag:0];
+	
+	timeout是超时时间，这个根据实际的需要去设置
+
+	这个是写的回调
+
+		- (void)socket:(GCDAsyncSocket*)sock didWriteDataWithTag:(long)tag；
+	
+	在写之后，需要再调用读方法，这样才能收到你发出请求后从服务器那边收到的数据
+
+		[self.socketreadDataToData:[GCDAsyncSocket CRLFData] withTimeout:10 maxLength:50000 tag:0];
+		
+	[GCDAsyncSocket CRLFData]这里是设置边界符，maxLength是设置你收到的请求数据内容的最大值
+
+	在读回调里面，你可以根据不同业务来执行不同的操作
+
+		- (void)socket:(GCDAsyncSocket*)sock didReadData:(NSData*)data withTag:(long)tag；
+		
+	最后一个则是断开连接，这个只需要调用
+
+		[self.socket disconnect];
+		
+	ok，这样的话，最简单基础的socket通信，你已经大致能完成了~
+	
+	具体代码参考： [GCDAsyncSocketDemo](https://github.com/JhonChan/Learning/tree/master/SocketDemo/GCDAsyncSocketDemo)
+
+	更多使用方法见[https://github.com/robbiehanson/CocoaAsyncSocket](https://github.com/robbiehanson/CocoaAsyncSocket).
