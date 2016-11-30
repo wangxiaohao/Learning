@@ -167,8 +167,7 @@ static CFWriteStreamRef outputStream;
 // socket回调函数
 static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType type, CFDataRef address, const void *data, void *info)
 {
-    if (kCFSocketAcceptCallBack == type)
-    {
+    if (kCFSocketAcceptCallBack == type) {
         // 本地套接字句柄
         CFSocketNativeHandle nativeSocketHandle = *(CFSocketNativeHandle *)data;
         uint8_t name[SOCK_MAXADDRLEN];
@@ -181,8 +180,7 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
         CFWriteStreamRef oStream;
         // 创建一个可读写的socket连接
         CFStreamCreatePairWithSocket(kCFAllocatorDefault, nativeSocketHandle, &iStream, &oStream);
-        if (iStream && oStream)
-        {
+        if (iStream && oStream) {
             CFStreamClientContext streamContext = {0, info, NULL, NULL};
             if (!CFReadStreamSetClient(iStream, kCFStreamEventHasBytesAvailable,readStream, &streamContext))
             {
@@ -197,8 +195,7 @@ static void TCPServerAcceptCallBack(CFSocketRef socket, CFSocketCallBackType typ
             CFWriteStreamScheduleWithRunLoop(oStream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
             CFReadStreamOpen(iStream);
             CFWriteStreamOpen(oStream);
-        } else
-        {
+        } else {
             close(nativeSocketHandle);
         }
     }
