@@ -62,8 +62,8 @@
     __block UIImage *image1 = nil;
     dispatch_group_async(group, queue, ^{
         NSURL * url = [NSURL URLWithString:@"http://img.knowledge.csdn.net/upload/base/1452496101906_906.jpg"];
-        NSData * data = [[NSData alloc]initWithContentsOfURL:url];
-        image1 = [[UIImage alloc]initWithData:data];
+        NSData * data = [[NSData alloc] initWithContentsOfURL:url];
+        image1 = [[UIImage alloc] initWithData:data];
     });
     
     __block UIImage *image2 = nil;
