@@ -110,17 +110,17 @@ extension ViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         
         guard let pixBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
-        
+        let request = VNTrackRectangleRequest()
         do {
-            var requestOptions:[VNImageOption : Any] = [:]
-
-            if let camData = CMGetAttachment(sampleBuffer, kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, nil) {
-                requestOptions = [.cameraIntrinsics:camData]
-            }
-            let reqHandelr = VNImageRequestHandler(cvPixelBuffer: pixBuffer, orientation: .up, options: requestOptions)
-            let faceReq = VNDetectFaceRectanglesRequest(completionHandler: handleRectangleRequestUpdate)
-            try reqHandelr.perform([faceReq])
-//            try self.faceDetectionRequestHandler.perform([faceDetectionRequest], on: pixBuffer)
+//            var requestOptions:[VNImageOption : Any] = [:]
+//
+//            if let camData = CMGetAttachment(sampleBuffer, kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, nil) {
+//                requestOptions = [.cameraIntrinsics:camData]
+//            }
+//            let reqHandelr = VNImageRequestHandler(cvPixelBuffer: pixBuffer, orientation: .up, options: requestOptions)
+////            let faceReq = VNDetectFaceRectanglesRequest(completionHandler: handleRectangleRequestUpdate)
+//            try reqHandelr.perform([faceReq])
+            try faceDetectionRequestHandler.perform([faceDetectionRequest], on: pixBuffer)
         } catch  {
             print("Throws: \(error)")
         }
