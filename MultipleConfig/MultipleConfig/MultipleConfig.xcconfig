@@ -1,0 +1,14 @@
+//
+//  MultipleConfig.xcconfig
+//  MultipleConfig
+//
+//  Created by CXY on 2018/2/26.
+//  Copyright © 2018年 ubtechinc. All rights reserved.
+//
+IS_APP_NAME = Debug Config
+IS_APP_VERSION = 0.2
+IS_APP_BUNDLE_ID = com.intensifystudio.DonateStaging
+IS_APP_ICON = AppIconStaging
+BACKEND_URL = http:\/\/api.intensifystudio.com/staging
+CONSUMER_KEY = ck_a57e4fa2e14c12f400371cf2951ec3dea5_staging
+CONSUMER_SECRET = cs_c847caa35ce1041e9c69d239141f13f63bb22b_staging
