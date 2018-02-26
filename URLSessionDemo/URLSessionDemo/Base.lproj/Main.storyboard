@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.17" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.14"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="URLSessionDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0eR-Oi-fKs">
+                                <rect key="frame" x="137" y="47" width="101" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="101" id="FJv-5e-3Ba"/>
+                                    <constraint firstAttribute="height" constant="30" id="VKF-7I-Uzi"/>
+                                </constraints>
+                                <state key="normal" title="cancel"/>
+                                <connections>
+                                    <action selector="stopDownloadTask" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mll-1O-RMt"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XPm-pU-nbW">
+                                <rect key="frame" x="137" y="95" width="101" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="101" id="Ghv-uV-iPs"/>
+                                    <constraint firstAttribute="height" constant="30" id="SIy-rN-pTI"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="101" id="UQd-vj-gFg"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="WjN-X5-eh5"/>
+                                </constraints>
+                                <state key="normal" title="resume"/>
+                                <connections>
+                                    <action selector="resumeDownloadTask" destination="BYZ-38-t0r" eventType="touchUpInside" id="M4U-Rh-JEz"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oAY-6c-kwF">
+                                <rect key="frame" x="164" y="9" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="BvG-eM-qPE"/>
+                                    <constraint firstAttribute="height" constant="30" id="H65-25-QkM"/>
+                                </constraints>
+                                <state key="normal" title="start"/>
+                                <connections>
+                                    <action selector="downloadTaskWithDelegate" destination="BYZ-38-t0r" eventType="touchUpInside" id="zsO-Uc-ZEY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="egk-He-ykM">
+                                <rect key="frame" x="98" y="145" width="178" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="fT7-Ab-3kA"/>
+                                    <constraint firstAttribute="width" constant="178" id="zTw-Ip-OxP"/>
+                                </constraints>
+                                <state key="normal" title="downloadInBackground"/>
+                                <connections>
+                                    <action selector="downloadFileInBackground" destination="BYZ-38-t0r" eventType="touchUpInside" id="gQP-gV-6ow"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="XPm-pU-nbW" firstAttribute="top" secondItem="0eR-Oi-fKs" secondAttribute="bottom" constant="18" id="8Ak-kY-9Na"/>
+                            <constraint firstItem="0eR-Oi-fKs" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="27" id="9KV-T4-vvV"/>
+                            <constraint firstItem="egk-He-ykM" firstAttribute="top" secondItem="XPm-pU-nbW" secondAttribute="bottom" constant="20" id="C8R-OW-7Hh"/>
+                            <constraint firstItem="0eR-Oi-fKs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="K8P-UA-DI6"/>
+                            <constraint firstItem="oAY-6c-kwF" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="UMR-CJ-zgU"/>
+                            <constraint firstItem="XPm-pU-nbW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="avv-Hr-N8g"/>
+                            <constraint firstItem="oAY-6c-kwF" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="9" id="n2B-c1-hAT"/>
+                            <constraint firstItem="egk-He-ykM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="qXi-2W-J9J"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="140" y="128.18590704647679"/>
+        </scene>
+    </scenes>
+</document>
